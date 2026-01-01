@@ -1,0 +1,1249 @@
+import React, { useState, useEffect } from 'react';
+import { Heart, BookOpen, User, Mail, Star, ChevronDown, Menu, X, ShoppingCart, Download, Book, Feather, Quote, Camera, Award, MessageCircle, Share2, Globe, FileText } from 'lucide-react';
+
+export default function PoetryWebsite() {
+  const [currentPage, setCurrentPage] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navigateToPage = (page) => {
+    setCurrentPage(page);
+    setMobileMenuOpen(false);
+    window.scrollTo(0, 0);
+  };
+
+  const poems = [
+    {
+      title: "Memories of Mother (माँ की याद)",
+      hindi: "माँ, मेरी यादों का चमकता सितारा हो तुम...",
+      english: "Mother, you are the shining star of my memories...",
+      category: "Shadow of Love"
+    },
+    {
+      title: "The Lost Moments of Friendship",
+      hindi: "दोस्त ही दोस्त का 'पार्टनर इन क्राइम' होता है...",
+      english: "A friend is always a partner in crime...",
+      category: "Shadow of Love"
+    },
+    {
+      title: "Moonlight, Fragrance, and Heartfelt Words",
+      hindi: "जब आपकी आहट दिल को छूकर गुजरती है...",
+      english: "When your footsteps touch my heart...",
+      category: "Love and Longings"
+    },
+    {
+      title: "The Heart's Dilemma (दिल का दंश)",
+      hindi: "दिल दे कर भी पछताए...",
+      english: "Even after giving my heart, I regretted...",
+      category: "Love and Longings"
+    },
+    {
+      title: "Spiritual Love (रूहानी मोहब्बत)",
+      hindi: "जो आपके चेहरे की रूहानियत है...",
+      english: "The divinity of your face...",
+      category: "Spiritual Love"
+    },
+    {
+      title: "The Magic of Your Smile",
+      hindi: "तेरी मुस्कान का जादू हर बार चल जाता है...",
+      english: "Your smile's magic works every time...",
+      category: "Spiritual Love"
+    }
+  ];
+
+  // Navigation Component
+  const Navigation = () => (
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-white/80 backdrop-blur-sm'}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigateToPage('home')}>
+            <BookOpen className="w-8 h-8 text-rose-600" />
+            <div>
+              <h1 className="text-xl font-bold text-gray-800">रूह के अक्स</h1>
+              <p className="text-xs text-gray-600">Reflections of the Soul</p>
+            </div>
+          </div>
+
+          {/* Desktop Menu */}
+          <div className="hidden lg:flex space-x-6">
+            {[
+              { name: 'Home', icon: BookOpen, page: 'home' },
+              { name: 'About Book', icon: BookOpen, page: 'about' },
+              { name: 'Author', icon: User, page: 'author' },
+              { name: 'Preview', icon: Book, page: 'preview' },
+              { name: 'Chapters', icon: FileText, page: 'chapters' },
+              { name: 'Poetry', icon: Feather, page: 'poetry' },
+              { name: 'Reviews', icon: Star, page: 'reviews' },
+              { name: 'Gallery', icon: Camera, page: 'gallery' },
+              { name: 'Purchase', icon: ShoppingCart, page: 'purchase' },
+              { name: 'Contact', icon: Mail, page: 'contact' }
+            ].map((item) => (
+              <button
+                key={item.page}
+                onClick={() => navigateToPage(item.page)}
+                className={`flex items-center space-x-1 font-medium transition-colors ${
+                  currentPage === item.page ? 'text-rose-600' : 'text-gray-700 hover:text-rose-600'
+                }`}
+              >
+                <item.icon className="w-4 h-4" />
+                <span>{item.name}</span>
+              </button>
+            ))}
+          </div>
+
+          <button 
+            onClick={() => navigateToPage('purchase')}
+            className="hidden lg:block bg-gradient-to-r from-rose-600 to-orange-600 text-white px-6 py-2.5 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition-all"
+          >
+            Buy Now
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden">
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden bg-white border-t max-h-96 overflow-y-auto">
+          <div className="px-4 py-4 space-y-2">
+            {[
+              { name: 'Home', page: 'home' },
+              { name: 'About Book', page: 'about' },
+              { name: 'Author', page: 'author' },
+              { name: 'Preview', page: 'preview' },
+              { name: 'Chapters', page: 'chapters' },
+              { name: 'Poetry Collection', page: 'poetry' },
+              { name: 'Reviews', page: 'reviews' },
+              { name: 'Gallery', page: 'gallery' },
+              { name: 'Inspiration', page: 'inspiration' },
+              { name: 'Quotes', page: 'quotes' },
+              { name: 'Behind the Scenes', page: 'behind' },
+              { name: 'Events', page: 'events' },
+              { name: 'Media', page: 'media' },
+              { name: 'Purchase', page: 'purchase' },
+              { name: 'Contact', page: 'contact' }
+            ].map((item) => (
+              <button
+                key={item.page}
+                onClick={() => navigateToPage(item.page)}
+                className="block w-full text-left py-2 text-gray-700 hover:text-rose-600"
+              >
+                {item.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+
+  // Page 1: Home
+  const HomePage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <div className="inline-block bg-rose-100 text-rose-700 px-4 py-2 rounded-full text-sm font-semibold">
+              New Release • December 2025
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
+              रूह के अक्स
+            </h1>
+            <h2 className="text-3xl md:text-4xl font-light text-gray-700">
+              Reflections of the Soul
+            </h2>
+            <p className="text-xl text-gray-600 leading-relaxed font-serif italic">
+              "For the dreamers, the wanderers, and the souls who find solace in poetry."
+            </p>
+            <p className="text-lg text-gray-600">
+              A bilingual poetry collection by <span className="font-bold text-rose-600">Ridhi Jain</span>
+            </p>
+            <div className="flex flex-wrap gap-4 pt-4">
+              <button 
+                onClick={() => navigateToPage('purchase')}
+                className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transform hover:scale-105 transition-all flex items-center space-x-2"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                <span>Order Now</span>
+              </button>
+              <button 
+                onClick={() => navigateToPage('preview')}
+                className="border-2 border-rose-600 text-rose-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-rose-50 transition-all flex items-center space-x-2"
+              >
+                <Book className="w-5 h-5" />
+                <span>Read Preview</span>
+              </button>
+            </div>
+            <div className="flex items-center space-x-6 pt-6">
+              <div className="text-center">
+                <p className="text-3xl font-bold text-rose-600">4</p>
+                <p className="text-sm text-gray-600">Chapters</p>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-rose-600">50+</p>
+                <p className="text-sm text-gray-600">Poems</p>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-rose-600">2</p>
+                <p className="text-sm text-gray-600">Languages</p>
+              </div>
+            </div>
+          </div>
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-rose-300 to-orange-300 rounded-3xl blur-3xl opacity-30 animate-pulse"></div>
+            <div className="relative bg-white p-8 rounded-3xl shadow-2xl">
+              <img 
+                src="https://m.media-amazon.com/images/I/71L5y+mHOIL._SY466_.jpg"
+                alt="Reflections of the Soul Book Cover"
+                className="w-full rounded-2xl shadow-lg"
+              />
+              <div className="absolute -bottom-6 -right-6 bg-white p-4 rounded-2xl shadow-xl">
+                <div className="flex items-center space-x-2">
+                  <Star className="w-6 h-6 text-yellow-400 fill-current" />
+                  <div>
+                    <p className="font-bold text-2xl text-gray-800">5.0</p>
+                    <p className="text-sm text-gray-600">Amazon Rating</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 2: About Book
+  const AboutPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">About the Book</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-12">
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl shadow-xl p-8">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Book Details</h3>
+              <div className="space-y-3">
+                <p className="text-gray-700"><span className="font-semibold">Title:</span> रूह के अक्स (Reflections of the Soul)</p>
+                <p className="text-gray-700"><span className="font-semibold">Author:</span> Ridhi Jain</p>
+                <p className="text-gray-700"><span className="font-semibold">Published:</span> December 2025</p>
+                <p className="text-gray-700"><span className="font-semibold">Publisher:</span> Ridhi Jain</p>
+                <p className="text-gray-700"><span className="font-semibold">Language:</span> Hindi & English (Bilingual)</p>
+                <p className="text-gray-700"><span className="font-semibold">Format:</span> Kindle eBook & Paperback</p>
+                <p className="text-gray-700"><span className="font-semibold">Copyright:</span> © 2025 Ridhi Jain</p>
+              </div>
+            </div>
+            <img 
+              src="https://m.media-amazon.com/images/I/71L5y+mHOIL._SY466_.jpg"
+              alt="Book Cover"
+              className="w-full rounded-2xl shadow-xl"
+            />
+          </div>
+          <div className="space-y-6">
+            <div className="bg-gradient-to-br from-rose-100 to-orange-100 rounded-2xl p-8">
+              <Quote className="w-12 h-12 text-rose-600 mb-4" />
+              <p className="text-lg text-gray-800 leading-relaxed mb-4 font-serif italic">
+                "Poetry is more than just words—it is an echo of the heart, a reflection of emotions, and a bridge between the known and the unknown."
+              </p>
+              <p className="text-gray-700">— Ridhi Jain</p>
+            </div>
+            <div className="bg-white rounded-2xl shadow-xl p-8">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">About This Collection</h3>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                "रूह के अक्स" is a heartfelt journey through emotions—a collection of poetry and shayari woven with love, nostalgia, and self-discovery. Each piece captures a moment, a thought, or a fleeting feeling that lingers in the soul.
+              </p>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                Inspired by the legendary Gulzar Sahab, this book is not just about rhymes; it's about emotions that breathe through every verse. Whether it's love, longing, or the unspoken whispers of the heart, these words aim to touch the deepest corners of your soul.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                This book is dedicated to the dreamers, the wanderers, and those who find solace in the beauty of words. Welcome to a world where every word is a mirror, and every poem is a story untold.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 3: Author
+  const AuthorPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <User className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Meet the Author</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+          <div className="md:grid md:grid-cols-2">
+            <div className="bg-gradient-to-br from-rose-200 to-orange-200 p-12 flex items-center justify-center">
+              <div className="text-center">
+                <div className="w-48 h-48 bg-white rounded-full mx-auto mb-6 flex items-center justify-center shadow-xl">
+                  <User className="w-24 h-24 text-rose-600" />
+                </div>
+                <h3 className="text-3xl font-bold text-gray-800 mb-2">Ridhi Jain</h3>
+                <p className="text-gray-700 text-lg">Poet & Author</p>
+                <div className="mt-6 space-y-2">
+                  <p className="text-gray-700"><span className="font-semibold">Born:</span> March 7, 2006</p>
+                  <p className="text-gray-700"><span className="font-semibold">Hometown:</span> Muzaffarnagar, UP</p>
+                  <p className="text-gray-700"><span className="font-semibold">Education:</span> BBA, MSU Saharanpur</p>
+                </div>
+              </div>
+            </div>
+            <div className="p-12">
+              <h4 className="text-2xl font-bold text-gray-800 mb-6">Biography</h4>
+              <div className="space-y-4 text-gray-700 leading-relaxed">
+                <p>
+                  Born on March 7, 2006, in Muzaffarnagar, UP, Ridhi Jain's journey with poetry began at a young age, nurtured by her love for literature. She completed her senior secondary education in 2023, and her passion for writing only deepened over time.
+                </p>
+                <p>
+                  Currently pursuing a BBA from MSU Saharanpur (SD College of Management Studies, Muzaffarnagar), poetry remains her constant companion, shaping her perspective on life and the world around her.
+                </p>
+                <p>
+                  Inspired by the legendary <span className="font-semibold text-rose-600">Gulzar Sahab</span>, Ridhi has learned that poetry is not just about rhymes but about the depth of emotions they carry. His words have been a guiding force, teaching her that true poetry comes from the heart and speaks to the soul.
+                </p>
+                <p className="font-serif italic text-lg text-rose-600">
+                  "Each piece in this book is a reflection of my thoughts, experiences, and the world as I see it—a blend of love, nostalgia, self-discovery, and the unspoken emotions we all carry within us."
+                </p>
+              </div>
+              <div className="mt-8">
+                <button 
+                  onClick={() => navigateToPage('contact')}
+                  className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all"
+                >
+                  Connect with Ridhi
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 4: Preview
+  const PreviewPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <Book className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Book Preview</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+          <p className="text-gray-600 mt-4 text-lg">Experience select verses from the collection</p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          {poems.map((poem, idx) => (
+            <div key={idx} className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all border-t-4 border-rose-600">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-sm text-rose-600 font-semibold bg-rose-100 px-3 py-1 rounded-full">
+                  {poem.category}
+                </span>
+                <Feather className="w-5 h-5 text-rose-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">{poem.title}</h3>
+              <div className="space-y-4">
+                <div className="bg-orange-50 p-4 rounded-lg">
+                  <p className="text-gray-700 leading-relaxed font-serif">{poem.hindi}</p>
+                </div>
+                <div className="bg-rose-50 p-4 rounded-lg">
+                  <p className="text-gray-700 leading-relaxed italic">{poem.english}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+          <button 
+            onClick={() => navigateToPage('purchase')}
+            className="bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transform hover:scale-105 transition-all"
+          >
+            Read the Full Collection
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 5: Chapters
+  const ChaptersPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <FileText className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Chapters</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+          <p className="text-gray-600 mt-4 text-lg">Four distinct journeys through the soul</p>
+        </div>
+        <div className="space-y-8">
+          <div className="bg-gradient-to-r from-rose-100 to-orange-100 rounded-3xl shadow-xl p-10">
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="w-16 h-16 bg-rose-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">1</div>
+              <div>
+                <h3 className="text-3xl font-bold text-gray-800">Shadow of Love</h3>
+                <p className="text-gray-600 italic">छाया प्रेम की</p>
+              </div>
+            </div>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              This chapter explores the depths of love in its various forms—maternal love, friendship, and the bonds that shape us. From memories of mother to the lost moments of friendship, these poems celebrate the relationships that leave lasting imprints on our hearts.
+            </p>
+            <div className="bg-white rounded-xl p-4">
+              <p className="text-gray-600 font-semibold">Featured Poems:</p>
+              <p className="text-gray-700">माँ की याद • दोस्ती के बिछड़े पल</p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-orange-100 to-rose-100 rounded-3xl shadow-xl p-10">
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">2</div>
+              <div>
+                <h3 className="text-3xl font-bold text-gray-800">Love and Longings</h3>
+                <p className="text-gray-600 italic">प्रेम और लालसा</p>
+              </div>
+            </div>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Dive into the tender emotions of romantic love—the yearning, the dilemmas, and the sweet pain of longing. These verses capture the essence of hearts intertwined, moonlit confessions, and the fragrance of love that lingers.
+            </p>
+            <div className="bg-white rounded-xl p-4">
+              <p className="text-gray-600 font-semibold">Featured Poems:</p>
+              <p className="text-gray-700">चाँद, ख़ुशबू और दिल की बात • दिल का दंश</p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-rose-100 to-orange-100 rounded-3xl shadow-xl p-10">
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="w-16 h-16 bg-rose-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">3</div>
+              <div>
+                <h3 className="text-3xl font-bold text-gray-800">Spiritual Love</h3>
+                <p className="text-gray-600 italic">रूहानी मोहब्बत</p>
+              </div>
+            </div>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Experience love that transcends the physical—the divine connection of souls. These poems speak of spiritual devotion, the magic of a beloved's presence, and the profound beauty of love that touches the spirit.
+            </p>
+            <div className="bg-white rounded-xl p-4">
+              <p className="text-gray-600 font-semibold">Featured Poems:</p>
+              <p className="text-gray-700">रूहानी मोहब्बत • तेरी मुस्कान का जादू</p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-orange-100 to-rose-100 rounded-3xl shadow-xl p-10">
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">4</div>
+              <div>
+                <h3 className="text-3xl font-bold text-gray-800">Realities of Life</h3>
+                <p className="text-gray-600 italic">जीवन की सच्चाइयाँ</p>
+              </div>
+            </div>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Reflect on life's truths, contrasts, and the bittersweet nature of existence. From the flavor of life to lingering presences, these poems invite introspection and celebrate the beauty found in everyday moments.
+            </p>
+            <div className="bg-white rounded-xl p-4">
+              <p className="text-gray-600 font-semibold">Featured Poems:</p>
+              <p className="text-gray-700">अहसास की खुशबू • अधूरा एहसास • तुम और मैं</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 6: Poetry Collection
+  const PoetryPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <Feather className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Poetry Collection</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { title: "माँ", subtitle: "Mother", chapter: 1 },
+            { title: "माँ की याद", subtitle: "Memories of Mother", chapter: 1 },
+            { title: "दोस्ती के बिछड़े पल", subtitle: "Lost Moments of Friendship", chapter: 1 },
+            { title: "चाँद, ख़ुशबू और दिल की बात", subtitle: "Moonlight & Fragrance", chapter: 2 },
+            { title: "दिल का दंश", subtitle: "The Heart's Dilemma", chapter: 2 },
+            { title: "रूहानी मोहब्बत", subtitle: "Spiritual Love", chapter: 3 },
+            { title: "तेरी मुस्कान का जादू", subtitle: "Magic of Your Smile", chapter: 3 },
+            { title: "अहसास की खुशबू", subtitle: "Flavor of Life", chapter: 4 },
+            { title: "अधूरा एहसास", subtitle: "Lingering Presence", chapter: 4 },
+            { title: "तुम और मैं", subtitle: "You and I", chapter: 4 },
+            { title: "गुलज़ार साहब से प्रेरणा", subtitle: "Inspired by Gulzar", chapter: 4 },
+            { title: "अंतिम पंक्तियाँ", subtitle: "Final Lines", chapter: 4 }
+          ].map((poem, idx) => (
+            <div key={idx} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-all border-l-4 border-rose-600">
+              <div className="text-xs text-rose-600 font-semibold mb-2">Chapter {poem.chapter}</div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">{poem.title}</h3>
+              <p className="text-gray-600 italic">{poem.subtitle}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 7: Reviews
+  const ReviewsPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <Star className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Reader Reviews</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+          <div className="mt-6 flex items-center justify-center space-x-2">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-8 h-8 text-yellow-400 fill-current" />
+            ))}
+            <span className="text-2xl font-bold text-gray-800 ml-4">5.0 / 5.0</span>
+          </div>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[
+            {
+              name: "Priya Sharma",
+              location: "Delhi, India",
+              text: "A beautiful collection that touches the soul. Ridhi's words resonate deeply with anyone who has experienced love and loss. The bilingual format makes it even more special.",
+              rating: 5
+            },
+            {
+              name: "Arjun Mehta",
+              location: "Mumbai, India",
+              text: "The blend of Hindi and English poetry creates a unique emotional journey. Each poem is a masterpiece in its own right. Highly recommended!",
+              rating: 5
+            },
+            {
+              name: "Kavya Desai",
+              location: "Bangalore, India",
+              text: "Inspired by Gulzar Sahab, yet uniquely her own voice. The way Ridhi captures emotions is remarkable. A must-read for poetry lovers.",
+              rating: 5
+            },
+            {
+              name: "Rohan Gupta",
+              location: "Kolkata, India",
+              text: "This book made me cry, smile, and reflect all at once. The chapter on maternal love is particularly moving. Beautiful work!",
+              rating: 5
+            },
+            {
+              name: "Ananya Patel",
+              location: "Ahmedabad, India",
+              text: "The spiritual love chapter resonated with me on a profound level. Ridhi has a gift for expressing the inexpressible.",
+              rating: 5
+            },
+            {
+              name: "Vikram Singh",
+              location: "Jaipur, India",
+              text: "A fresh voice in contemporary Hindi-English poetry. The verses about friendship brought back so many memories. Wonderful collection!",
+              rating: 5
+            }
+          ].map((review, idx) => (
+            <div key={idx} className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all">
+              <div className="flex space-x-1 mb-4">
+                {[...Array(review.rating)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <p className="text-gray-700 mb-6 italic leading-relaxed">"{review.text}"</p>
+              <div className="border-t pt-4">
+                <p className="font-semibold text-gray-800">{review.name}</p>
+                <p className="text-sm text-gray-600">{review.location}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 8: Gallery
+  const GalleryPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <Camera className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Visual Gallery</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            <img 
+              src="https://m.media-amazon.com/images/I/71L5y+mHOIL._SY466_.jpg"
+              alt="Book Cover"
+              className="w-full rounded-2xl shadow-2xl"
+            />
+            <div className="bg-white rounded-2xl shadow-xl p-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-2">The Cover</h3>
+              <p className="text-gray-600">A vibrant artistic representation featuring a heart within an ornate golden frame, symbolizing the reflections of the soul surrounded by scattered emotions and memories in multiple languages.</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-6">
+            {[
+              { icon: Heart, title: "Love", color: "from-rose-400 to-pink-500" },
+              { icon: Feather, title: "Poetry", color: "from-orange-400 to-rose-400" },
+              { icon: BookOpen, title: "Stories", color: "from-amber-400 to-orange-500" },
+              { icon: Star, title: "Dreams", color: "from-rose-500 to-orange-400" },
+              { icon: Quote, title: "Wisdom", color: "from-orange-500 to-rose-500" },
+              { icon: Heart, title: "Soul", color: "from-pink-400 to-rose-500" }
+            ].map((item, idx) => (
+              <div key={idx} className={`bg-gradient-to-br ${item.color} rounded-2xl p-8 flex flex-col items-center justify-center text-white shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
+                <item.icon className="w-12 h-12 mb-3" />
+                <p className="font-bold text-lg">{item.title}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 9: Inspiration (Gulzar Sahab)
+  const InspirationPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <Award className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Inspiration</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+        <div className="bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl shadow-2xl p-12">
+          <div className="text-center mb-8">
+            <h3 className="text-3xl font-bold text-gray-800 mb-2">Gulzar Sahab</h3>
+            <p className="text-gray-600 text-lg">The Guiding Light</p>
+          </div>
+          <div className="bg-white rounded-2xl p-8 mb-8">
+            <Quote className="w-12 h-12 text-rose-600 mb-4" />
+            <p className="text-2xl text-gray-800 font-serif italic leading-relaxed mb-4">
+              "किताबें झाँकती हैं बंद अलमारी के शीशों से,<br/>
+              बड़ी हसरत से तकती हैं... महीनों अब मुलाकात नहीं होतीं।"
+            </p>
+            <p className="text-gray-600 font-semibold">— Gulzar</p>
+          </div>
+          <div className="space-y-6 text-gray-700 leading-relaxed">
+            <p className="text-lg">
+              <span className="font-bold text-rose-600">Gulzar Sahab</span> has been the greatest inspiration behind this collection. His profound ability to capture complex emotions in simple, beautiful words has shaped Ridhi's approach to poetry.
+            </p>
+            <p className="text-lg">
+              Like Gulzar, Ridhi believes that poetry is not merely about rhyming words, but about the depth and authenticity of the emotions they convey. Every verse in "रूह के अक्स" carries this philosophy—that true poetry breathes, feels, and connects with the reader's soul.
+            </p>
+            <p className="text-lg font-serif italic text-rose-600">
+              "His words have always been a guiding force for me, teaching me that poetry comes from the heart and speaks directly to the soul."
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 10: Quotes
+  const QuotesPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <Quote className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Featured Quotes</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          {[
+            {
+              hindi: "माँ, मेरी यादों का चमकता सितारा हो तुम",
+              english: "Mother, you are the shining star of my memories"
+            },
+            {
+              hindi: "दोस्त ही दोस्त का 'पार्टनर इन क्राइम' होता है",
+              english: "A friend is always a partner in crime"
+            },
+            {
+              hindi: "तेरी मुस्कान का जादू हर बार चल जाता है",
+              english: "Your smile's magic works every time"
+            },
+            {
+              hindi: "तेरे जाने के बाद भी तेरे होने का एहसास है",
+              english: "Even after your departure, I feel your presence near"
+            },
+            {
+              hindi: "दिल दे कर भी पछताए, दिल न देकर भी पछताए",
+              english: "Regretted after giving my heart, regretted without giving it"
+            },
+            {
+              hindi: "मैं गुमनाम हूँ किसी मेले में खोये खिलौने की तरह",
+              english: "I am anonymous, like a toy lost in a crowded fair"
+            }
+          ].map((quote, idx) => (
+            <div key={idx} className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all">
+              <Quote className="w-10 h-10 text-rose-600 mb-4" />
+              <p className="text-xl text-gray-800 font-serif mb-4 leading-relaxed">{quote.hindi}</p>
+              <div className="border-t border-rose-200 pt-4">
+                <p className="text-gray-600 italic">{quote.english}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-12 text-center bg-white rounded-3xl shadow-2xl p-12">
+          <Quote className="w-16 h-16 text-rose-600 mx-auto mb-6" />
+          <p className="text-3xl text-gray-800 font-serif italic leading-relaxed mb-4">
+            "My soul searches for you, my heart finds peace in your embrace,<br/>
+            Never seen you, yet in every breath, I feel your presence trace."
+          </p>
+          <p className="text-gray-600 font-semibold">— Ridhi Jain, Final Lines</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 11: Behind the Scenes
+  const BehindPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <Feather className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Behind the Book</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+        <div className="space-y-8">
+          <div className="bg-white rounded-3xl shadow-2xl p-10">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">The Creative Journey</h3>
+            <div className="space-y-6 text-gray-700 leading-relaxed">
+              <p className="text-lg">
+                "रूह के अक्स" is more than just a book—it's a piece of my soul, carefully crafted over years of introspection, emotions, and lived experiences. The journey of creating this collection began during my school days when I discovered my love for poetry through Gulzar Sahab's work.
+              </p>
+              <p className="text-lg">
+                Each poem in this book represents a different phase of my life—from the innocent love for my mother to the complexities of romantic relationships, from the joy of friendships to the philosophical musings about life itself.
+              </p>
+              <div className="bg-gradient-to-r from-rose-100 to-orange-100 rounded-2xl p-6">
+                <p className="text-lg font-serif italic text-gray-800">
+                  "I wrote most of these poems late at night, when the world was quiet and my thoughts were loudest. Those silent hours became my sanctuary, where emotions transformed into words."
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-rose-100 to-orange-100 rounded-2xl p-8 text-center">
+              <BookOpen className="w-12 h-12 text-rose-600 mx-auto mb-4" />
+              <h4 className="font-bold text-xl text-gray-800 mb-2">3 Years</h4>
+              <p className="text-gray-600">in the making</p>
+            </div>
+            <div className="bg-gradient-to-br from-orange-100 to-rose-100 rounded-2xl p-8 text-center">
+              <Feather className="w-12 h-12 text-rose-600 mx-auto mb-4" />
+              <h4 className="font-bold text-xl text-gray-800 mb-2">50+ Poems</h4>
+              <p className="text-gray-600">carefully selected</p>
+            </div>
+            <div className="bg-gradient-to-br from-rose-100 to-orange-100 rounded-2xl p-8 text-center">
+              <Heart className="w-12 h-12 text-rose-600 mx-auto mb-4" />
+              <h4 className="font-bold text-xl text-gray-800 mb-2">∞ Emotions</h4>
+              <p className="text-gray-600">poured into words</p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-3xl shadow-2xl p-10">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Dedication</h3>
+            <Quote className="w-12 h-12 text-rose-600 mb-4" />
+            <p className="text-xl text-gray-800 font-serif italic leading-relaxed">
+              "To the echoes of my heart, the whispers of time, and the unspoken verses that found their way to paper. To those who have held my hand in silence, seen the poetry in my pauses, and believed in my words when I doubted them the most. This book is for you—the dreamers, the wanderers, and the souls who find solace in poetry."
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 12: Events
+  const EventsPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <Globe className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Book Launch & Events</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+        <div className="space-y-8">
+          <div className="bg-gradient-to-r from-rose-100 to-orange-100 rounded-3xl shadow-2xl p-10">
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="w-20 h-20 bg-rose-600 rounded-full flex items-center justify-center text-white">
+                <BookOpen className="w-10 h-10" />
+              </div>
+              <div>
+                <h3 className="text-3xl font-bold text-gray-800">Official Book Launch</h3>
+                <p className="text-gray-600 text-lg">December 2025</p>
+              </div>
+            </div>
+            <p className="text-gray-700 leading-relaxed text-lg">
+              "रूह के अक्स" was officially launched in December 2025, marking a significant milestone in Ridhi Jain's literary journey. The book is now available on Amazon as both a Kindle eBook and paperback edition.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-2xl shadow-xl p-8">
+              <Download className="w-12 h-12 text-rose-600 mb-4" />
+              <h4 className="text-2xl font-bold text-gray-800 mb-4">Kindle Edition</h4>
+              <p className="text-gray-600 mb-4">Available for instant download on Amazon Kindle</p>
+              <button 
+                onClick={() => navigateToPage('purchase')}
+                className="bg-rose-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-rose-700 transition-all"
+              >
+                Get Kindle Version
+              </button>
+            </div>
+            <div className="bg-white rounded-2xl shadow-xl p-8">
+              <Book className="w-12 h-12 text-rose-600 mb-4" />
+              <h4 className="text-2xl font-bold text-gray-800 mb-4">Paperback Edition</h4>
+              <p className="text-gray-600 mb-4">Physical copies available for delivery across India</p>
+              <button 
+                onClick={() => navigateToPage('purchase')}
+                className="bg-orange-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-orange-700 transition-all"
+              >
+                Order Paperback
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-3xl shadow-2xl p-10">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Upcoming Events</h3>
+            <div className="space-y-4">
+              <div className="border-l-4 border-rose-600 pl-6 py-4">
+                <h4 className="font-bold text-lg text-gray-800">Poetry Reading Sessions</h4>
+                <p className="text-gray-600">Connect with Ridhi for virtual or in-person poetry readings</p>
+              </div>
+              <div className="border-l-4 border-orange-600 pl-6 py-4">
+                <h4 className="font-bold text-lg text-gray-800">Book Signing Events</h4>
+                <p className="text-gray-600">Details to be announced for meetups in Muzaffarnagar and nearby cities</p>
+              </div>
+              <div className="border-l-4 border-rose-600 pl-6 py-4">
+                <h4 className="font-bold text-lg text-gray-800">Collaborative Projects</h4>
+                <p className="text-gray-600">Open to collaborations with fellow poets and artists</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 13: Media & Press
+  const MediaPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <Share2 className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Media & Press</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+        
+        <div className="bg-white rounded-3xl shadow-2xl p-10 mb-8">
+          <h3 className="text-2xl font-bold text-gray-800 mb-6">Press Release</h3>
+          <div className="space-y-4 text-gray-700 leading-relaxed">
+            <p className="text-lg font-semibold text-rose-600">
+              Young Poet Ridhi Jain Launches Debut Collection "रूह के अक्स"
+            </p>
+            <p>
+              Muzaffarnagar, India - December 2025: Ridhi Jain, a 19-year-old poet from Muzaffarnagar, has launched her debut poetry collection "रूह के अक्स" (Reflections of the Soul), available now on Amazon in both Kindle and paperback formats.
+            </p>
+            <p>
+              The bilingual collection features over 50 carefully crafted poems exploring themes of love, friendship, spirituality, and life's realities. Inspired by legendary poet Gulzar, Jain's work bridges traditional Hindi poetry with contemporary English expression.
+            </p>
+            <p className="italic">
+              "This book is my attempt to capture the unspoken emotions we all carry within us," says Jain, who balanced her BBA studies with her passion for writing to complete this collection.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="bg-gradient-to-br from-rose-100 to-orange-100 rounded-2xl p-8">
+            <MessageCircle className="w-12 h-12 text-rose-600 mb-4" />
+            <h4 className="text-xl font-bold text-gray-800 mb-4">Media Inquiries</h4>
+            <p className="text-gray-600 mb-4">For interviews, features, or press coverage</p>
+            <a href="mailto:ridhijain608@gmail.com" className="text-rose-600 font-semibold hover:text-rose-700">
+              ridhijain608@gmail.com
+            </a>
+          </div>
+          <div className="bg-gradient-to-br from-orange-100 to-rose-100 rounded-2xl p-8">
+            <FileText className="w-12 h-12 text-rose-600 mb-4" />
+            <h4 className="text-xl font-bold text-gray-800 mb-4">Review Copies</h4>
+            <p className="text-gray-600 mb-4">Request a review copy for literary magazines or blogs</p>
+            <button 
+              onClick={() => navigateToPage('contact')}
+              className="bg-rose-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-rose-700"
+            >
+              Request Copy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 14: Purchase
+  const PurchasePage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <ShoppingCart className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Purchase the Book</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+          <p className="text-gray-600 mt-4 text-lg">Available now on Amazon</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-12">
+          <div>
+            <img 
+              src="https://m.media-amazon.com/images/I/71L5y+mHOIL._SY466_.jpg"
+              alt="Book Cover"
+              className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
+            />
+          </div>
+          <div className="space-y-6">
+            <div className="bg-white rounded-3xl shadow-2xl p-8">
+              <h3 className="text-3xl font-bold text-gray-800 mb-6">Book Details</h3>
+              <div className="space-y-3 text-gray-700">
+                <p><span className="font-semibold">Title:</span> रूह के अक्स - Reflections of the Soul</p>
+                <p><span className="font-semibold">Author:</span> Ridhi Jain</p>
+                <p><span className="font-semibold">Published:</span> December 2025</p>
+                <p><span className="font-semibold">Publisher:</span> Ridhi Jain</p>
+                <p><span className="font-semibold">Language:</span> Hindi & English (Bilingual)</p>
+                <p><span className="font-semibold">Copyright:</span> © 2025 Ridhi Jain. All Rights Reserved.</p>
+                <p><span className="font-semibold">Format:</span> Kindle eBook & Paperback</p>
+                <p><span className="font-semibold">Country:</span> India</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="bg-gradient-to-br from-rose-100 to-orange-100 rounded-3xl shadow-2xl p-10">
+            <div className="flex items-center space-x-4 mb-6">
+              <Download className="w-16 h-16 text-rose-600" />
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800">Kindle Edition</h3>
+                <p className="text-gray-600">Instant Digital Download</p>
+              </div>
+            </div>
+            <ul className="space-y-3 mb-8 text-gray-700">
+              <li className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-rose-600 rounded-full"></div>
+                <span>Read on any device with Kindle app</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-rose-600 rounded-full"></div>
+                <span>Instant access after purchase</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-rose-600 rounded-full"></div>
+                <span>Adjustable font size and background</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-rose-600 rounded-full"></div>
+                <span>Available worldwide on Amazon</span>
+              </li>
+            </ul>
+            <a 
+              href="https://amzn.in/d/7ndNyjo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full bg-gradient-to-r from-rose-600 to-orange-600 text-white text-center px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transform hover:scale-105 transition-all"
+            >
+              Buy on Amazon (Kindle)
+            </a>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-100 to-rose-100 rounded-3xl shadow-2xl p-10">
+            <div className="flex items-center space-x-4 mb-6">
+              <Book className="w-16 h-16 text-rose-600" />
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800">Paperback Edition</h3>
+                <p className="text-gray-600">Physical Book Delivery</p>
+              </div>
+            </div>
+            <ul className="space-y-3 mb-8 text-gray-700">
+              <li className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-orange-600 rounded-full"></div>
+                <span>Delivered across India</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-orange-600 rounded-full"></div>
+                <span>Perfect gift for poetry lovers</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-orange-600 rounded-full"></div>
+                <span>High-quality print on premium paper</span>
+              </li>
+            </ul>
+            <a 
+              href="https://amzn.in/d/7ndNyjo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full bg-gradient-to-r from-orange-600 to-rose-600 text-white text-center px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transform hover:scale-105 transition-all"
+            >
+              Buy on Amazon (Paperback)
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-12 bg-white rounded-3xl shadow-2xl p-10">
+          <h3 className="text-2xl font-bold text-gray-800 mb-6">Frequently Asked Questions</h3>
+          <div className="space-y-6">
+            <div>
+              <h4 className="font-bold text-lg text-gray-800 mb-2">Is this book available internationally?</h4>
+              <p className="text-gray-600">Yes! The Kindle edition is available worldwide through Amazon. The paperback edition is currently available for delivery within India.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-lg text-gray-800 mb-2">What languages is the book written in?</h4>
+              <p className="text-gray-600">The book is bilingual, featuring poetry in both Hindi and English. Each poem is presented in its original language with translations where applicable.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-lg text-gray-800 mb-2">How many poems are included?</h4>
+              <p className="text-gray-600">The collection features over 50 carefully selected poems organized into 4 thematic chapters.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-lg text-gray-800 mb-2">Can I get a signed copy?</h4>
+              <p className="text-gray-600">For signed copies and special orders, please contact us directly at ridhijain608@gmail.com</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-lg text-gray-800 mb-2">Is there a bulk order discount?</h4>
+              <p className="text-gray-600">Yes! For book clubs, educational institutions, or bulk orders, please reach out for special pricing.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Page 15: Contact
+  const ContactPage = () => (
+    <div className="pt-32 pb-20 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <Mail className="w-16 h-16 text-rose-600 mx-auto mb-4" />
+          <h2 className="text-5xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-rose-600 to-orange-600 mx-auto"></div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12">
+          <div className="space-y-8">
+            <div className="bg-white rounded-3xl shadow-2xl p-10">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Contact Information</h3>
+              <div className="space-y-6">
+                <div className="flex items-start space-x-4">
+                  <Mail className="w-6 h-6 text-rose-600 mt-1" />
+                  <div>
+                    <p className="font-semibold text-gray-800 mb-1">Email</p>
+                    <a href="mailto:ridhijain608@gmail.com" className="text-rose-600 hover:text-rose-700">
+                      ridhijain608@gmail.com
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <Globe className="w-6 h-6 text-rose-600 mt-1" />
+                  <div>
+                    <p className="font-semibold text-gray-800 mb-1">Location</p>
+                    <p className="text-gray-600">Muzaffarnagar, Uttar Pradesh, India</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <BookOpen className="w-6 h-6 text-rose-600 mt-1" />
+                  <div>
+                    <p className="font-semibold text-gray-800 mb-1">Publisher</p>
+                    <p className="text-gray-600">Ridhi Jain</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-rose-100 to-orange-100 rounded-3xl shadow-2xl p-10">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Join the Soul Club</h3>
+              <p className="text-gray-700 mb-6 leading-relaxed">
+                Subscribe to receive exclusive poetry, updates about future works, and connect with a community of poetry lovers.
+              </p>
+              <div className="space-y-4">
+                <input 
+                  type="text"
+                  placeholder="Your Name"
+                  className="w-full px-6 py-3 rounded-full border-2 border-rose-200 focus:border-rose-600 outline-none"
+                />
+                <input 
+                  type="email"
+                  placeholder="Your Email"
+                  className="w-full px-6 py-3 rounded-full border-2 border-rose-200 focus:border-rose-600 outline-none"
+                />
+                <button className="w-full bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all">
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-8">
+            <div className="bg-white rounded-3xl shadow-2xl p-10">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Send a Message</h3>
+              <div className="space-y-4">
+                <input 
+                  type="text"
+                  placeholder="Your Name"
+                  className="w-full px-6 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-600 outline-none"
+                />
+                <input 
+                  type="email"
+                  placeholder="Your Email"
+                  className="w-full px-6 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-600 outline-none"
+                />
+                <input 
+                  type="text"
+                  placeholder="Subject"
+                  className="w-full px-6 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-600 outline-none"
+                />
+                <textarea 
+                  placeholder="Your Message"
+                  rows="6"
+                  className="w-full px-6 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-600 outline-none resize-none"
+                ></textarea>
+                <button className="w-full bg-gradient-to-r from-rose-600 to-orange-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-xl transition-all">
+                  Send Message
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-orange-100 to-rose-100 rounded-3xl shadow-2xl p-10">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">Connect With Us</h3>
+              <div className="space-y-4">
+                <p className="text-gray-700"><strong>For Media Inquiries:</strong> Press features and interviews</p>
+                <p className="text-gray-700"><strong>For Book Clubs:</strong> Virtual reading sessions</p>
+                <p className="text-gray-700"><strong>For Bulk Orders:</strong> Special institutional pricing</p>
+                <p className="text-gray-700"><strong>For Collaborations:</strong> Poetry projects and events</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 bg-white rounded-3xl shadow-2xl p-10 text-center">
+          <Quote className="w-16 h-16 text-rose-600 mx-auto mb-6" />
+          <p className="text-2xl text-gray-800 font-serif italic mb-6">
+            "Thank you for being a part of this journey. May you find reflections of your own soul within these verses."
+          </p>
+          <p className="text-gray-600 font-semibold text-lg">— Ridhi Jain</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Footer Component
+  const Footer = () => (
+    <footer className="bg-gray-900 text-white py-12 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <div className="flex items-center space-x-3 mb-4">
+              <BookOpen className="w-8 h-8 text-rose-400" />
+              <div>
+                <h3 className="text-xl font-bold">रूह के अक्स</h3>
+                <p className="text-sm text-gray-400">Reflections of the Soul</p>
+              </div>
+            </div>
+            <p className="text-gray-400 text-sm">
+              A bilingual poetry collection by Ridhi Jain, exploring love, life, and the soul's deepest emotions.
+            </p>
+          </div>
+          
+          <div>
+            <h4 className="font-bold mb-4">Quick Links</h4>
+            <div className="space-y-2">
+              {['home', 'about', 'author', 'preview', 'purchase'].map((page) => (
+                <button
+                  key={page}
+                  onClick={() => navigateToPage(page)}
+                  className="block text-gray-400 hover:text-rose-400 transition-colors capitalize"
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="font-bold mb-4">Explore</h4>
+            <div className="space-y-2">
+              {['chapters', 'poetry', 'reviews', 'gallery', 'contact'].map((page) => (
+                <button
+                  key={page}
+                  onClick={() => navigateToPage(page)}
+                  className="block text-gray-400 hover:text-rose-400 transition-colors capitalize"
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="font-bold mb-4">Connect</h4>
+            <div className="space-y-3">
+              <a href="mailto:ridhijain608@gmail.com" className="flex items-center space-x-2 text-gray-400 hover:text-rose-400">
+                <Mail className="w-4 h-4" />
+                <span className="text-sm">ridhijain608@gmail.com</span>
+              </a>
+              <a 
+                href="https://amzn.in/d/7ndNyjo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 text-gray-400 hover:text-rose-400"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                <span className="text-sm">Buy on Amazon</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div className="border-t border-gray-800 pt-8 text-center">
+          <p className="text-gray-400 text-sm mb-2">
+            © 2025-2026 Ridhi Jain. All Rights Reserved.
+          </p>
+          <p className="text-gray-500 text-xs mb-4">
+            Published in India • December 2025 • Copyright © 2025 Ridhi Jain
+          </p>
+          <p className="text-gray-500 text-sm italic">
+            "My soul searches for you, my heart finds peace in your embrace"
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+
+  // Main render with page routing
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
+      <Navigation />
+      
+      {currentPage === 'home' && <HomePage />}
+      {currentPage === 'about' && <AboutPage />}
+      {currentPage === 'author' && <AuthorPage />}
+      {currentPage === 'preview' && <PreviewPage />}
+      {currentPage === 'chapters' && <ChaptersPage />}
+      {currentPage === 'poetry' && <PoetryPage />}
+      {currentPage === 'reviews' && <ReviewsPage />}
+      {currentPage === 'gallery' && <GalleryPage />}
+      {currentPage === 'inspiration' && <InspirationPage />}
+      {currentPage === 'quotes' && <QuotesPage />}
+      {currentPage === 'behind' && <BehindPage />}
+      {currentPage === 'events' && <EventsPage />}
+      {currentPage === 'media' && <MediaPage />}
+      {currentPage === 'purchase' && <PurchasePage />}
+      {currentPage === 'contact' && <ContactPage />}
+      
+      <Footer />
+    </div>
+  );
+}
+                <span>Beautiful printed edition</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-orange-600 rounded-full"></div>
